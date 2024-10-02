@@ -27,6 +27,7 @@ class Ui_High_Data_Fusion(object):
         MainWindow.resize(800, 600)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
+
         self.horizontalLayout = QHBoxLayout(self.centralwidget)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.verticalLayout_2 = QVBoxLayout()
@@ -240,7 +241,7 @@ class Ui_High_Data_Fusion(object):
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"\u7b2c\u4e8c\u5c42\u7b97\u6cd5", None))
         self.comboBox_4.setItemText(0, QCoreApplication.translate("MainWindow", u"RF", None))
         self.comboBox_4.setItemText(1, QCoreApplication.translate("MainWindow", u"PLSR", None))
-        self.comboBox_4.setItemText(2, QCoreApplication.translate("MainWindow", u"PSO-SVR", None))
+        self.comboBox_4.setItemText(2, QCoreApplication.translate("MainWindow", u"SVR", None))
 
         self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"\u5206\u6790", None))
     # retranslateUi

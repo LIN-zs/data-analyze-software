@@ -29,10 +29,14 @@ class Ui_Main(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout = QVBoxLayout(self.centralwidget)
         self.verticalLayout.setObjectName(u"verticalLayout")
+
         self.label = QLabel(self.centralwidget)
         self.label.setObjectName(u"label")
 
+
         self.verticalLayout.addWidget(self.label)
+
+
 
         self.pushButton = QPushButton(self.centralwidget)
         self.pushButton.setObjectName(u"pushButton")
@@ -66,7 +70,7 @@ class Ui_Main(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"\u5149\u8c31\u5206\u6790\u8f6f\u4ef6", None))
-        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"\u975e\u6570\u636e\u878d\u5408", None))
+        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"整合数据", None))
         self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"\u4f4e\u7ea7\u4e2d\u7ea7\u6570\u636e\u878d\u5408\u5206\u6790", None))
         self.pushButton_3.setText(QCoreApplication.translate("MainWindow", u"\u9ad8\u7ea7\u6570\u636e\u878d\u5408", None))
     # retranslateUi

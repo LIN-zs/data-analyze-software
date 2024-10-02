@@ -81,7 +81,7 @@ class Ui_Low_Or_Mid_Analysis(object):
 
         self.horizontalLayout_5.addItem(self.horizontalSpacer_2)
 
-        self.checkBox = QCheckBox(self.centralwidget)
+        self.checkBox = QPushButton(self.centralwidget)
         self.checkBox.setObjectName(u"checkBox")
 
         self.horizontalLayout_5.addWidget(self.checkBox)
@@ -152,9 +152,11 @@ class Ui_Low_Or_Mid_Analysis(object):
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
         self.menubar.setGeometry(QRect(0, 0, 800, 21))
+
         self.menureturn = QMenu(self.menubar)
         self.menureturn.setObjectName(u"menureturn")
         MainWindow.setMenuBar(self.menubar)
+
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
@@ -173,7 +175,7 @@ class Ui_Low_Or_Mid_Analysis(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"\u6dfb\u52a0\u6570\u636e\u6e90", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"\u5b9a\u91cf\u7b97\u6cd5", None))
-        self.comboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"PSO-SVR", None))
+        self.comboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"SVR", None))
         self.comboBox.setItemText(1, QCoreApplication.translate("MainWindow", u"RF", None))
         self.comboBox.setItemText(2, QCoreApplication.translate("MainWindow", u"PLSR", None))
 
@@ -186,5 +188,6 @@ class Ui_Low_Or_Mid_Analysis(object):
 
         self.pushButton.setText(QCoreApplication.translate("MainWindow", u"\u5206\u6790", None))
         self.menureturn.setTitle(QCoreApplication.translate("MainWindow", u"return", None))
+
     # retranslateUi
 

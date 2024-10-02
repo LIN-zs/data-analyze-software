@@ -16,8 +16,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QHBoxLayout, QLabel,
-    QLineEdit, QSizePolicy, QSpacerItem, QVBoxLayout,
-    QWidget)
+                               QLineEdit, QSizePolicy, QSpacerItem, QVBoxLayout,
+                               QWidget, QPushButton, QFileDialog)
 
 class Ui_Feature_Extraction(object):
     def setupUi(self, Form):
@@ -33,13 +33,17 @@ class Ui_Feature_Extraction(object):
 
         self.horizontalLayout_32.addWidget(self.label_29)
 
-        self.lineEdit_26 = QLineEdit(Form)
-        self.lineEdit_26.setObjectName(u"lineEdit_26")
-
+        self.lineEdit_26 = QLabel(Form)
         self.horizontalLayout_32.addWidget(self.lineEdit_26)
 
 
+
         self.verticalLayout.addLayout(self.horizontalLayout_32)
+
+        self.btn= QPushButton(Form)
+        self.btn.setText("选择文件")
+        self.horizontalLayout_32.addWidget(self.btn)
+        self.btn.clicked.connect(self.getcsv)
 
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
@@ -114,6 +118,9 @@ class Ui_Feature_Extraction(object):
 
         QMetaObject.connectSlotsByName(Form)
     # setupUi
+    def getcsv(self):
+        fileName, fileType = QFileDialog().getOpenFileName(None,'选择储存csv文件路径',"", "All Files (*)")
+        self.lineEdit_26.setText(fileName)
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))

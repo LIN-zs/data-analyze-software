@@ -62,7 +62,7 @@ class Ui_First_Method_Select(object):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
         self.label.setText(QCoreApplication.translate("Form", u"\u5b9a\u91cf\u7b97\u6cd5", None))
         self.comboBox.setItemText(0, QCoreApplication.translate("Form", u"RF", None))
-        self.comboBox.setItemText(1, QCoreApplication.translate("Form", u"PSO-SVR", None))
+        self.comboBox.setItemText(1, QCoreApplication.translate("Form", u"SVR", None))
         self.comboBox.setItemText(2, QCoreApplication.translate("Form", u"PLSR", None))
 
     # retranslateUi

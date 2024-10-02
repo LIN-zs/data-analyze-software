@@ -6,7 +6,7 @@ from basemethod.FeatureExtrac import CARS,iPLS,VIP
 import matplotlib.pyplot as plt
 from collections import OrderedDict
 from pylab import mpl
-
+from sklearn import preprocessing
 
 def ks(x, y, test_size=0.2):
     """
@@ -144,8 +144,10 @@ class originaldata():
             # x坐标为原始x坐标的中点
             #x_mid_points = (x[:-1] + x[1:]) / 2
             self.dataformodel=derivative_spectra
-        elif name =='normal':
-            pass
+        elif name =='Normal':
+            minmax=preprocessing.MinMaxScaler()
+            self.dataformodel=minmax.fit_transform(self.dataformodel)
+
         else:
             pass
 
@@ -166,7 +168,7 @@ class originaldata():
             ipls=iPLS(self.dataformodel,self.label,highpara[0],highpara[1])
             self.dataformodel, self.label=ipls.extract(highpara[2])
         elif name=='PCA':
-            pca=PCA(n_components=10)
+            pca=PCA(n_components=highpara[0])
             self.dataformodel=pca.fit_transform(self.dataformodel)
             self.datapca=pd.DataFrame(self.dataformodel,index=self.label)
         else:
@@ -218,7 +220,7 @@ class originaldata():
     def getttdata(self,test_size=0.3):
         totaldata=self.dataformodel
         totallabel=self.label
-        return sk(totaldata,totallabel)
+        return sk(totaldata,totallabel,test_size=test_size)
     def getcvdata(self,Kfold=5):
         totaldata=self.dataformodel
         totallabel=self.label
@@ -229,7 +231,7 @@ class originaldata():
     def getksdata(self,test_size):
         return ks(self.dataformodel,self.label,test_size)
     def getelsedata(self,testlabel):
-        totallabel=list(set(self.label.tolist()))
+        totallabel=list(set(self.label))
         trainlabel=list(set(totallabel)-set(testlabel))
         indexs=[]
 
