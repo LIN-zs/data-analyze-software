@@ -75,7 +75,6 @@ def sk(x,y,test_size=0.2):
         test_data = x[list(test_index), :]
         test_label = np.array([y[i] for i in test_index]).reshape(-1, 1)
     return train_data, test_data, train_label.reshape(-1, ), test_label.reshape(-1, )
-
 def cv(totaldata, totallabel,Kfold=5):
     cv = KFold(n_splits=Kfold, shuffle=True, random_state=42)
     train_data = []
@@ -150,13 +149,15 @@ class originaldata():
 
         else:
             pass
-
     def SelectWavenumber(self,wavenumber):
-        ssss=self.data.columns.values.astype(np.float64)
-        ss=np.where(ssss>=wavenumber[0])
-        sss=np.where(ssss<=wavenumber[1])
-        select=np.intersect1d(ss[0],sss[0])
-        self.dataformodel=self.dataformodel[:,select]
+        if wavenumber[0]==None or wavenumber[1]==None:
+            pass
+        else:
+            ssss=self.data.columns.values.astype(np.float64)
+            ss=np.where(ssss<=wavenumber[0])
+            sss=np.where(ssss>=wavenumber[1])
+            select=np.intersect1d(ss[0],sss[0])
+            self.dataformodel=self.dataformodel[:,select]
     def FeatureExtract(self,name,highpara=[]):
         if name =='CARS':
             cars=CARS(self.dataformodel,self.label,highpara[0],highpara[1],cv=highpara[2])
@@ -173,8 +174,6 @@ class originaldata():
             self.datapca=pd.DataFrame(self.dataformodel,index=self.label)
         else:
             pass
-
-
     def plot(self):
         mpl.rcParams["font.sans-serif"] = ["SimHei"]
         fig = plt.figure()
@@ -216,7 +215,6 @@ class originaldata():
         plt.show()
         pass
 
-
     def getttdata(self,test_size=0.3):
         totaldata=self.dataformodel
         totallabel=self.label
@@ -225,7 +223,6 @@ class originaldata():
         totaldata=self.dataformodel
         totallabel=self.label
         return cv(totaldata,totallabel,Kfold)
-
     def gettotaldata(self):
         return self.dataformodel,np.array(self.label)
     def getksdata(self,test_size):

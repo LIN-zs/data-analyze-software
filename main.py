@@ -16,6 +16,16 @@ from ui.ui_unit_data import *
 import os
 from PySide6.QtGui import QAction
 from PySide6.QtWidgets import QMainWindow, QFileDialog
+
+
+
+
+
+
+
+
+
+
 class ui_unit_data(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -85,7 +95,6 @@ class ui_low_or_mid_analysis(QMainWindow):
         self.cmbx.currentIndexChanged.connect(self.handleSelectionChange)
         self.checkbox.clicked.connect(self.plt)
         self.btn.clicked.connect(self.addtab)
-
     def handleSelectionChange(self):
         method = self.ui.comboBox.currentText()
         layout = self.ui.verticalLayout_4
@@ -108,8 +117,6 @@ class ui_low_or_mid_analysis(QMainWindow):
         global i
         self.ui.tabWidget.addTab(Ui_Feature_Extraction(),'data'+str(i))
         i+=1
-
-
     def analy(self):
         tab_num=self.ui.tabWidget.count()
         diclist=[]
@@ -119,11 +126,13 @@ class ui_low_or_mid_analysis(QMainWindow):
             premethod=current_tab_widget.ui.comboBox.currentText()
             featuremethod=current_tab_widget.ui.comboBox_2.currentText()
             hara=get_feature_extraction_hara(featuremethod,current_tab_widget.ui.verticalLayout_2)
+            selec_wavenumber=get_select_wavenumber(current_tab_widget.ui.verticalLayout_2)
             dic={
                 'csvname':csvname,
                 'featuremethod':featuremethod,
                 'premethod':premethod,
-                'hara':hara
+                'hara':hara,
+                'select_wavenumber':selec_wavenumber
             }
             diclist.append(dic)
         regressionmethod=self.ui.comboBox.currentText()
@@ -136,6 +145,8 @@ class ui_low_or_mid_analysis(QMainWindow):
 #C:\Users\16609\Desktop\research\Pb 定标\LIBS.csv
 #C:\Users\16609\Desktop\光谱融合近红外数据\total_data.csv
         #33.2,78.2,128.2
+
+
 
         if regressiondic['rf_state']:
             model = RandomForestRegressor(regressiondic['rf_number'])

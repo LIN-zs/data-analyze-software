@@ -36,14 +36,25 @@ class Ui_Feature_Extraction(object):
         self.lineEdit_26 = QLabel(Form)
         self.horizontalLayout_32.addWidget(self.lineEdit_26)
 
-
-
-        self.verticalLayout.addLayout(self.horizontalLayout_32)
-
         self.btn= QPushButton(Form)
         self.btn.setText("选择文件")
         self.horizontalLayout_32.addWidget(self.btn)
         self.btn.clicked.connect(self.getcsv)
+
+
+        self.verticalLayout.addLayout(self.horizontalLayout_32)
+
+        self.horizontalLayout_select_wavenumber = QHBoxLayout()
+        self.label_select_wavenumber = QLabel(Form)
+        self.lineEdit_low= QLineEdit(Form)
+        self.lineEdit_high= QLineEdit(Form)
+
+        self.horizontalLayout_select_wavenumber.addWidget(self.label_select_wavenumber)
+        self.horizontalLayout_select_wavenumber.addWidget(self.lineEdit_low)
+        self.horizontalLayout_select_wavenumber.addWidget(self.lineEdit_high)
+        self.verticalLayout.addLayout(self.horizontalLayout_select_wavenumber)
+
+
 
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
@@ -123,6 +134,8 @@ class Ui_Feature_Extraction(object):
         self.lineEdit_26.setText(fileName)
 
     def retranslateUi(self, Form):
+        self.label_select_wavenumber.setText(QCoreApplication.translate("Form", u"特征选择波段", None))
+
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
         self.label_29.setText(QCoreApplication.translate("Form", u"\u6587\u4ef6\u8def\u5f84", None))
         self.label_2.setText(QCoreApplication.translate("Form", u"\u9884\u5904\u7406\u65b9\u6cd5", None))

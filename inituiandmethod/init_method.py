@@ -27,6 +27,7 @@ def cal_fusion_data(dic_list):
         data=originaldata(dic['csvname'])
         data.preprocess(dic['premethod'])
         data.FeatureExtract(dic['featuremethod'],dic['hara'])
+        data.SelectWavenumber(dic['select_wavenumber'])
         datas.append(data)
     data=DataFusion(datas)
     return data
@@ -53,7 +54,10 @@ def plt_results(true_label,predict_labels,train_label,predict_label):
     plt.scatter(train_label,predict_label,color='b',marker='*',label='calibration set')
     plt.legend()
     return fig
-
+def get_select_wavenumber(ui):
+    wavenumber_low=ui.layout().itemAt(0).wid.ui.lineEdit_low.text()
+    wavenumber_high=ui.layout().itemAt(0).wid.ui.lineEdit_high.text()
+    return [wavenumber_low,wavenumber_high]
 def get_feature_extraction_hara(featuremethod,layout):
     hara=[]
     if featuremethod == 'VIP':
