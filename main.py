@@ -18,14 +18,6 @@ from PySide6.QtGui import QAction
 from PySide6.QtWidgets import QMainWindow, QFileDialog
 
 
-
-
-
-
-
-
-
-
 class ui_unit_data(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -126,7 +118,7 @@ class ui_low_or_mid_analysis(QMainWindow):
             premethod=current_tab_widget.ui.comboBox.currentText()
             featuremethod=current_tab_widget.ui.comboBox_2.currentText()
             hara=get_feature_extraction_hara(featuremethod,current_tab_widget.ui.verticalLayout_2)
-            selec_wavenumber=get_select_wavenumber(current_tab_widget.ui.verticalLayout_2)
+            selec_wavenumber=get_select_wavenumber(current_tab_widget.ui.horizontalLayout_select_wavenumber)
             dic={
                 'csvname':csvname,
                 'featuremethod':featuremethod,
@@ -142,8 +134,7 @@ class ui_low_or_mid_analysis(QMainWindow):
         spiltinformation=self.ui.lineEdit.text()
 
         train_data, test_data, train_label, test_label=get_dataset(spilttype,spiltinformation,data)
-#C:\Users\16609\Desktop\research\Pb 定标\LIBS.csv
-#C:\Users\16609\Desktop\光谱融合近红外数据\total_data.csv
+
         #33.2,78.2,128.2
 
 

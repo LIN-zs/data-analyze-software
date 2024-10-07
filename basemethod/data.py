@@ -150,7 +150,7 @@ class originaldata():
         else:
             pass
     def SelectWavenumber(self,wavenumber):
-        if wavenumber[0]==None or wavenumber[1]==None:
+        if wavenumber[0]=='' or wavenumber[1]=='':
             pass
         else:
             ssss=self.data.columns.values.astype(np.float64)

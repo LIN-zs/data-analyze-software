@@ -55,8 +55,9 @@ def plt_results(true_label,predict_labels,train_label,predict_label):
     plt.legend()
     return fig
 def get_select_wavenumber(ui):
-    wavenumber_low=ui.layout().itemAt(0).wid.ui.lineEdit_low.text()
-    wavenumber_high=ui.layout().itemAt(0).wid.ui.lineEdit_high.text()
+
+    wavenumber_low=ui.layout().itemAt(1).wid.text()
+    wavenumber_high=ui.layout().itemAt(2).wid.text()
     return [wavenumber_low,wavenumber_high]
 def get_feature_extraction_hara(featuremethod,layout):
     hara=[]

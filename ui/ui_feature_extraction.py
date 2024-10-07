@@ -44,6 +44,7 @@ class Ui_Feature_Extraction(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout_32)
 
+
         self.horizontalLayout_select_wavenumber = QHBoxLayout()
         self.label_select_wavenumber = QLabel(Form)
         self.lineEdit_low= QLineEdit(Form)
