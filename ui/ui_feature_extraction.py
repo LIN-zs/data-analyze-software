@@ -74,8 +74,6 @@ class Ui_Feature_Extraction(object):
         self.comboBox.setObjectName(u"comboBox")
 
         self.horizontalLayout.addWidget(self.comboBox)
-
-
         self.verticalLayout.addLayout(self.horizontalLayout)
 
         self.horizontalLayout_2 = QHBoxLayout()

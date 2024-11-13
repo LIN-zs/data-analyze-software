@@ -94,27 +94,11 @@ def trans_label(index):
     return labels
 
 class originaldata():
-    def __init__(self,path=r'C:\Users\16609\Desktop\光谱融合LIBS数据\classcsv\NIRS.csv'):
+    def __init__(self,path):
         self.data=pd.read_csv(path,index_col=0)
         self.label=[]
         for i in self.data.index:
-            if i =='黑土':
-                self.label.append(78.348)
-            elif i=='赤红壤':
-                self.label.append(11.59)
-            elif i=='黄土':
-                self.label.append(19.096)
-            elif i=='褐土':
-                self.label.append(27.627)
-            elif i=='水稻土':
-                self.label.append(29.454)
-            elif i=='紫色土':
-                self.label.append(9.777)
-            elif i=='红壤土':
-                self.label.append(37.56)
-            else:
-                self.label.append(float(i.split('ppm')[0]))
-                #self.label.append(float(i))
+            self.label.append(float(i))
         self.dataformodel=self.data.values
     def getlabel(self):
         return self.label
@@ -122,31 +106,23 @@ class originaldata():
         if name=='snv' or name =='SNV':
             mean = np.mean(self.dataformodel, axis=1, keepdims=True)
             std = np.std(self.dataformodel, axis=1, keepdims=True)
-            # 对每个样本进行标准化
             snv_data = (self.dataformodel - mean) / std
             self.dataformodel=snv_data
         elif name=='msc'or name =='MSC':
             ref_spectrum = np.mean(self.dataformodel, axis=0)
             corrected_data = np.zeros_like(self.dataformodel)
             for i in range(self.dataformodel.shape[0]):
-                # 对每个样本进行最小二乘线性回归
                 fit = np.polyfit(ref_spectrum, self.dataformodel[i, :], 1)
-                # 应用校正
                 corrected_data[i, :] = (self.dataformodel[i, :] - fit[1]) / fit[0]
             self.dataformodel=corrected_data
         elif name=='1st'or name =='1ST':
-            a=self.data.columns
-            x=[ float(i) for i in self.data.columns.values]
+            x=[float(i) for i in self.data.columns.values]
             dx = np.diff(x)
-            # 注意这里，我们用dx[0]来近似所有波长间的差值，这是一个简化假设，通常光谱波长间隔是均匀的
             derivative_spectra = np.diff(self.dataformodel) / dx[0]
-            # x坐标为原始x坐标的中点
-            #x_mid_points = (x[:-1] + x[1:]) / 2
             self.dataformodel=derivative_spectra
         elif name =='Normal':
-            minmax=preprocessing.MinMaxScaler()
-            self.dataformodel=minmax.fit_transform(self.dataformodel)
-
+            for i in range(self.dataformodel.shape[0]):
+                self.dataformodel[i, :] = (self.dataformodel[i, :] - np.min(self.dataformodel[i, :])) / (np.max(self.dataformodel[i, :]) - np.min(self.dataformodel[i, :]))
         else:
             pass
     def SelectWavenumber(self,wavenumber):
@@ -154,10 +130,14 @@ class originaldata():
             pass
         else:
             ssss=self.data.columns.values.astype(np.float64)
-            ss=np.where(ssss<=wavenumber[0])
-            sss=np.where(ssss>=wavenumber[1])
+            print(wavenumber[0])
+
+            ss=np.where(ssss<=float(wavenumber[0]))
+            sss=np.where(ssss>=float(wavenumber[1]))
             select=np.intersect1d(ss[0],sss[0])
             self.dataformodel=self.dataformodel[:,select]
+    def SelectWavenumbers(self,wavenumbers):
+        pass
     def FeatureExtract(self,name,highpara=[]):
         if name =='CARS':
             cars=CARS(self.dataformodel,self.label,highpara[0],highpara[1],cv=highpara[2])
@@ -185,8 +165,10 @@ class originaldata():
         xlabel = data.index.values
         xlabel = [float(i) for i in xlabel]
         xlabels = np.linspace(xlabel[0], xlabel[-1], 5)
+        xlabel=np.linspace(xlabel[0], xlabel[-1], len(xlabel))
+        data_new=pd.DataFrame(self.dataformodel.T,columns=data.columns.values,index=xlabel)
         for name in index:
-            y = data[name].values
+            y = data_new[name].values
             plt.plot(xlabel, y, color=colors[i], label=name)
             i += 1
         plt.xticks(xlabels)
@@ -214,7 +196,6 @@ class originaldata():
         plt.legend(by_label.values(), by_label.keys())
         plt.show()
         pass
-
     def getttdata(self,test_size=0.3):
         totaldata=self.dataformodel
         totallabel=self.label

@@ -13,6 +13,8 @@ from basemethod.PSO_SVR import *
 from basemethod.GA import *
 from basemethod.GWO import *
 from ui.ui_unit_data import *
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.cross_decomposition import PLSRegression
 import os
 from PySide6.QtGui import QAction
 from PySide6.QtWidgets import QMainWindow, QFileDialog
@@ -34,7 +36,7 @@ class ui_unit_data(QMainWindow):
         self.window3.show()
         self.close()
     def getcsv(self):
-        csvname=QFileDialog().getExistingDirectory(self,'选择储存csv文件路径',"", "All Files (*)")
+        csvname=QFileDialog().getExistingDirectory(self,'选择储存csv文件路径',"./")
         self.ui.csvname.setText(csvname)
         self.csvnametocsave=csvname
     def getccsv(self):
@@ -67,10 +69,10 @@ class ui_unit_data(QMainWindow):
             dataframes.append(dataframe)
         dataframe = pd.concat(dataframes, axis=0)
         dataframe.to_csv(path_to_save + os.sep + 'total_data.csv', encoding='utf_8_sig')
-
 class ui_low_or_mid_analysis(QMainWindow):
     def __init__(self):
         super().__init__()
+        i=0
         self.ui =  Ui_Low_Or_Mid_Analysis()
         self.ui.setupUi(self)
         self.btn=self.ui.pushButton_2
@@ -88,6 +90,7 @@ class ui_low_or_mid_analysis(QMainWindow):
         self.checkbox.clicked.connect(self.plt)
         self.btn.clicked.connect(self.addtab)
     def handleSelectionChange(self):
+        """选择对应的定量分析算法并展示对应界面"""
         method = self.ui.comboBox.currentText()
         layout = self.ui.verticalLayout_4
         for i in range(layout.layout().count()):
@@ -102,10 +105,12 @@ class ui_low_or_mid_analysis(QMainWindow):
         else :
             layout.addWidget(Ui_Rf())
     def returnmain(self):
+        """返回对应界面"""
         self.window3 =ui_main()
         self.window3.show()
         self.close()
     def addtab(self):
+        """添加对应界面"""
         global i
         self.ui.tabWidget.addTab(Ui_Feature_Extraction(),'data'+str(i))
         i+=1
@@ -132,13 +137,7 @@ class ui_low_or_mid_analysis(QMainWindow):
         data = cal_fusion_data(diclist)
         spilttype = self.ui.comboBox_2.currentText()
         spiltinformation=self.ui.lineEdit.text()
-
         train_data, test_data, train_label, test_label=get_dataset(spilttype,spiltinformation,data)
-
-        #33.2,78.2,128.2
-
-
-
         if regressiondic['rf_state']:
             model = RandomForestRegressor(regressiondic['rf_number'])
         elif regressiondic['svr_state']:
@@ -161,33 +160,28 @@ class ui_low_or_mid_analysis(QMainWindow):
             model = PLSRegression(n_components=regressiondic['plsr_nc'])
         else:
             print('未选择定量模型')
-
-
         modelev = ME()
         calibration_labels, predict_labels, calibration_r2, predict_r2, calibration_mse, predict_mse, calibration_rpd, predict_rpd,test_label = modelev.caleva(
                 model, train_data, test_data, train_label, test_label)
-
-
         self.results.appendPlainText('训练集R2：'+str(calibration_r2[0]))
         self.results.appendPlainText('预测集R2：' + str(predict_r2[0]))
         self.results.appendPlainText('训练集RMSE：' + str(calibration_mse[0]))
         self.results.appendPlainText('预测集RMSE：' + str(predict_mse[0]))
         self.results.appendPlainText('训练集RPD：' + str(calibration_rpd[0]))
         self.results.appendPlainText('预测集RPD：' + str(predict_rpd[0]))
-        self.results.appendPlainText('                  ')
+        self.results.appendPlainText('                      ')
         self.plot_results(test_label,predict_labels,train_label,calibration_labels)
     def plot_tabdata(self):
         """
         绘制单独tab页的数据光谱图
         :return: None
         """
-        #self.checkbox.setChecked(False)
         tadid=self.ui.tabWidget.currentIndex()
-
         if type(tadid) != int:
             pass
         else:
             csvname=self.ui.tabWidget.widget(tadid).ui.lineEdit_26.text()
+            premethod=self.ui.tabWidget.widget(tadid).ui.comboBox.currentText()
             if csvname =='':
                 pass
             else:
@@ -203,7 +197,7 @@ class ui_low_or_mid_analysis(QMainWindow):
                         widget_plt.layout().removeItem(item)
                         
 
-                fig=plot_data(csvname=csvname)
+                fig=plot_data(csvname=csvname,premethod=premethod)
                 data_fic=MplCanvas(self,fig)
                 toolbar = NavigationToolbar(data_fic, self)
                 layout=QVBoxLayout()
@@ -224,14 +218,24 @@ class ui_low_or_mid_analysis(QMainWindow):
         fig=plt_results(true_label,predict_labels,train_label,predict_label)
 
         widget_plt = self.ui.widget_plt
-
-        # widget_plt.QVBoxLayout().deleteLater()
+        if widget_plt.layout() == None:
+            pass
+        else:
+            widget_plt.layout().deleteLater()
+            item_list = list(range(widget_plt.layout().count()))
+            item_list.reverse()
+            for numss in item_list:
+                item = widget_plt.layout().itemAt(numss)
+                widget_plt.layout().removeItem(item)
         data_fic = MplCanvas(self, fig)
         toolbar = NavigationToolbar(data_fic, self)
         layout = QVBoxLayout()
         layout.addWidget(toolbar)
         layout.addWidget(data_fic)
         widget_plt.setLayout(layout)
+
+
+
 class ui_high_new(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -402,9 +406,6 @@ class ui_high_new(QMainWindow):
         self.ui.plainTextEdit.appendPlainText('训练集RPD：' + str(calibration_rpd[0]))
         self.ui.plainTextEdit.appendPlainText('预测集RPD：' + str(predict_rpd[0]))
         self.ui.plainTextEdit.appendPlainText('                  ')
-
-
-
 class ui_main(QMainWindow):
     def __init__(self):
         super().__init__()

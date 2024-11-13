@@ -1,14 +1,8 @@
 #encoding=utf-8
 import matplotlib
-import matplotlib.pyplot as plt
-
 matplotlib.use('Qt5Agg')
 from basemethod.FusionData import *
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.cross_decomposition import PLSRegression
-import sklearn.svm
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg, NavigationToolbar2QT as NavigationToolbar
-
 from basemethod.ModelEvaluation import *
 from basemethod.PSO_SVR import *
 
@@ -31,13 +25,14 @@ def cal_fusion_data(dic_list):
         datas.append(data)
     data=DataFusion(datas)
     return data
-def plot_data(csvname):
+def plot_data(csvname,premethod):
     """
     绘制输入数据的光谱图
     :param csvname: 光谱图的文件路径
     :return: matlab的figure对象
     """
     data=originaldata(csvname)
+    data.preprocess(premethod)
     fig=data.plot()
     return fig
 def plt_results(true_label,predict_labels,train_label,predict_label):
